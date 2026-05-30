@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Diseño accesible pensado para adultos mayores (65+):
+ * - Texto base grande y escalable con --font-scale.
+ * - Alto contraste y modo oscuro opcionales.
+ * - Áreas táctiles amplias y foco visible.
+ */
+:root {
+  --font-scale: 1.15;
+}
+
+html {
+  /* El tamaño base se multiplica por la preferencia del usuario. */
+  font-size: calc(100% * var(--font-scale));
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
+
+/* Modo oscuro (clase en <html>) */
+html.dark body {
+  @apply bg-slate-950 text-slate-100;
+}
+
+/* Alto contraste: refuerza bordes y texto */
+html.contrast body {
+  @apply bg-white text-black;
+}
+html.contrast.dark body {
+  @apply bg-black text-white;
+}
+html.contrast .card-surface {
+  @apply border-2 border-black;
+}
+html.contrast.dark .card-surface {
+  @apply border-2 border-white;
+}
+
+/* Foco siempre visible y grueso (accesibilidad por teclado) */
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Respeta usuarios que prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
