@@ -103,8 +103,25 @@ export function Flashcard({ question, onRate }: FlashcardProps) {
         </Button>
       )}
 
-      {/* Autocalificación */}
-      {revealed && onRate && (
+      {/* Calificación: la IA califica la respuesta hablada; solo se corrige si el micrófono falló. */}
+      {revealed && onRate && voiceResult !== null && (
+        <div className="space-y-3 border-t border-slate-200 pt-4 dark:border-slate-700">
+          <p className={voiceResult ? 'font-bold text-green-600' : 'font-bold text-red-600'}>
+            {voiceResult ? `✓ ${t('voiceCorrect')}` : `✗ ${t('voiceIncorrect')}`}
+          </p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-[2fr_1fr]">
+            <Button big variant="primary" onClick={() => onRate(voiceResult)}>
+              {t('continueNext')}
+            </Button>
+            <Button big variant="secondary" onClick={() => onRate(!voiceResult)}>
+              {voiceResult ? t('fixWasIncorrect') : t('fixWasCorrect')}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Autocalificación manual: solo cuando NO se respondió hablando. */}
+      {revealed && onRate && voiceResult === null && (
         <div className="grid grid-cols-2 gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
           <Button big variant="secondary" onClick={() => onRate(false)}>
             🔁 {t('reviewAgain')}
