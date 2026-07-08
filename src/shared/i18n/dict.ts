@@ -52,6 +52,30 @@ export const UI_TEXT = {
     es: 'Esta respuesta depende de tu estado. Verifica el dato actual en una fuente oficial.',
     en: 'This answer depends on your state. Check the current answer from an official source.',
   },
+  searchWithAi: { es: 'Buscar respuesta actual con IA', en: 'Search current answer with AI' },
+  searchingAi: { es: 'Buscando en fuentes oficiales…', en: 'Searching official sources…' },
+  searchAgainAi: { es: 'Buscar de nuevo', en: 'Search again' },
+  needStateFirst: {
+    es: 'Elige tu estado en Ajustes para que la IA pueda buscar esta respuesta.',
+    en: 'Choose your state in Settings so the AI can search this answer.',
+  },
+  zipHelpsRepresentative: {
+    es: 'Consejo: agrega tu código postal en Ajustes para encontrar a tu representante exacto.',
+    en: 'Tip: add your ZIP code in Settings to find your exact representative.',
+  },
+  goToSettings: { es: 'Ir a Ajustes', en: 'Go to Settings' },
+  aiNotConfigured: {
+    es: 'El asistente de IA no está configurado, así que no puedo buscar este dato.',
+    en: 'The AI assistant is not configured, so I cannot search this data.',
+  },
+  aiVerifyError: {
+    es: 'No se pudo verificar ahora. Revisa tu conexión e intenta de nuevo.',
+    en: 'Could not verify right now. Check your connection and try again.',
+  },
+  aiVerifyDisclaimer: {
+    es: 'Dato generado por IA con búsqueda web. Confírmalo en la fuente oficial antes de tu entrevista.',
+    en: 'AI-generated with web search. Confirm it in the official source before your interview.',
+  },
 
   // Examen
   examIntro2025: {
@@ -92,6 +116,11 @@ export const UI_TEXT = {
   darkMode: { es: 'Modo oscuro', en: 'Dark mode' },
   myState: { es: 'Mi estado', en: 'My state' },
   selectState: { es: 'Selecciona tu estado', en: 'Select your state' },
+  zipCode: { es: 'Código postal', en: 'ZIP code' },
+  zipHelp: {
+    es: 'Opcional. Ayuda a la IA a encontrar a tu representante en la Cámara.',
+    en: 'Optional. Helps the AI find your U.S. House representative.',
+  },
   on: { es: 'Activado', en: 'On' },
   off: { es: 'Desactivado', en: 'Off' },
 

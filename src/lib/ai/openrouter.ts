@@ -7,9 +7,9 @@ export const openrouter = createOpenRouter({
 
 /** Modelos usados por el asistente. Editables según presupuesto/calidad. */
 export const MODELS = {
-  fast: 'google/gemini-2.0-flash-001',
-  balanced: 'anthropic/claude-3.5-sonnet',
-  powerful: 'anthropic/claude-3.7-sonnet',
+  fast: 'google/gemini-2.5-flash',
+  balanced: 'anthropic/claude-sonnet-4.5',
+  powerful: 'anthropic/claude-sonnet-4.6',
 } as const
 
 export type ModelKey = keyof typeof MODELS

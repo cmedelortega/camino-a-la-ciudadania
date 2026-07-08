@@ -12,6 +12,8 @@ export interface Settings {
   dark: boolean
   /** Código de estado (p. ej. "CA"). null si no se ha elegido. */
   stateCode: string | null
+  /** Código postal (ZIP) del usuario. Ayuda a identificar su distrito/representante. null si no se dio. */
+  zip: string | null
 }
 
 const DEFAULTS: Settings = {
@@ -20,6 +22,7 @@ const DEFAULTS: Settings = {
   highContrast: false,
   dark: false,
   stateCode: null,
+  zip: null,
 }
 
 const STORAGE_KEY = 'civics.settings.v1'
@@ -34,6 +37,7 @@ interface SettingsContextValue extends Settings {
   toggleContrast: () => void
   toggleDark: () => void
   setStateCode: (code: string | null) => void
+  setZip: (zip: string | null) => void
   /** Traduce una clave de UI al idioma actual. */
   t: (key: UIKey, vars?: Record<string, string | number>) => string
 }
@@ -86,6 +90,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const toggleContrast = useCallback(() => setSettings((s) => ({ ...s, highContrast: !s.highContrast })), [])
   const toggleDark = useCallback(() => setSettings((s) => ({ ...s, dark: !s.dark })), [])
   const setStateCode = useCallback((stateCode: string | null) => setSettings((s) => ({ ...s, stateCode })), [])
+  const setZip = useCallback((zip: string | null) => setSettings((s) => ({ ...s, zip })), [])
 
   const t = useCallback(
     (key: UIKey, vars?: Record<string, string | number>) => translate(key, settings.lang, vars),
@@ -94,7 +99,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <SettingsContext.Provider
-      value={{ ...settings, setLang, increaseFont, decreaseFont, toggleContrast, toggleDark, setStateCode, t }}
+      value={{ ...settings, setLang, increaseFont, decreaseFont, toggleContrast, toggleDark, setStateCode, setZip, t }}
     >
       {children}
     </SettingsContext.Provider>
