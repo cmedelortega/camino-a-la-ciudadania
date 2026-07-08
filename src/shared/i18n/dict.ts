@@ -31,6 +31,7 @@ export const UI_TEXT = {
   reviewAgain: { es: 'Repasar otra vez', en: 'Review again' },
   voiceCorrect: { es: 'La IA te calificó: correcto', en: 'AI graded you: correct' },
   voiceIncorrect: { es: 'La IA te calificó: incorrecto', en: 'AI graded you: incorrect' },
+  gradingAi: { es: 'Calificando con IA…', en: 'Grading with AI…' },
   continueNext: { es: 'Continuar', en: 'Continue' },
   fixWasCorrect: { es: 'En realidad la dije bien', en: 'I actually said it right' },
   fixWasIncorrect: { es: 'En realidad la dije mal', en: 'I actually got it wrong' },

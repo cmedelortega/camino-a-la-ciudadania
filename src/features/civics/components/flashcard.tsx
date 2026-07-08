@@ -24,6 +24,8 @@ export function Flashcard({ question, onRate }: FlashcardProps) {
   const reco = useSpeechRecognition()
   const [revealed, setRevealed] = useState(false)
   const [voiceResult, setVoiceResult] = useState<null | boolean>(null)
+  const [grading, setGrading] = useState(false)
+  const [feedback, setFeedback] = useState<string | null>(null)
 
   const questionText = lang === 'es' ? question.questionEs : question.questionEn
   const officialEn = question.questionEn
@@ -32,17 +34,64 @@ export function Flashcard({ question, onRate }: FlashcardProps) {
   useEffect(() => {
     setRevealed(false)
     setVoiceResult(null)
+    setGrading(false)
+    setFeedback(null)
     reco.reset()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question.id])
 
-  // Evalúa la respuesta hablada cuando llega el transcript.
+  // Califica la respuesta hablada cuando llega el transcript.
+  // Un modelo de IA juzga el significado (como un oficial); si falla, respaldo local.
   useEffect(() => {
     if (!reco.transcript) return
+    const spoken = reco.transcript
     const resolved = resolveAnswer(question, lang, stateCode)
-    const pool = resolved.answers.length ? resolved.answers : []
-    setVoiceResult(matchesAnswer(reco.transcript, pool))
+    // Para preguntas fijas usamos ambas versiones (inglés/español); para dinámicas, las resueltas.
+    const acceptable = question.dynamic
+      ? resolved.answers
+      : [...question.answersEn, ...question.answersEs]
     setRevealed(true)
+
+    // Sin respuesta fija que calificar (dinámica volátil): coincidencia local.
+    if (acceptable.length === 0) {
+      setVoiceResult(matchesAnswer(spoken, acceptable))
+      setFeedback(null)
+      return
+    }
+
+    let alive = true
+    setGrading(true)
+    setFeedback(null)
+    ;(async () => {
+      try {
+        const res = await fetch('/api/grade-answer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            questionEn: question.questionEn,
+            questionEs: question.questionEs,
+            acceptableAnswers: acceptable,
+            spoken,
+            lang,
+          }),
+        })
+        if (!res.ok) throw new Error(String(res.status))
+        const data = (await res.json()) as { correct: boolean; feedback?: string }
+        if (!alive) return
+        setVoiceResult(Boolean(data.correct))
+        setFeedback(data.feedback?.trim() || null)
+      } catch {
+        // Respaldo: coincidencia de texto local si la IA no está disponible.
+        if (!alive) return
+        setVoiceResult(matchesAnswer(spoken, acceptable))
+        setFeedback(null)
+      } finally {
+        if (alive) setGrading(false)
+      }
+    })()
+    return () => {
+      alive = false
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reco.transcript])
 
@@ -82,7 +131,10 @@ export function Flashcard({ question, onRate }: FlashcardProps) {
           {reco.transcript && (
             <span className="text-base text-slate-600 dark:text-slate-300">“{reco.transcript}”</span>
           )}
-          {voiceResult !== null && (
+          {grading && (
+            <span className="text-base text-slate-500 dark:text-slate-400">⏳ {t('gradingAi')}</span>
+          )}
+          {!grading && voiceResult !== null && (
             <span className={voiceResult ? 'font-bold text-green-600' : 'font-bold text-red-600'}>
               {voiceResult ? '✓' : '✗'}
             </span>
@@ -104,11 +156,12 @@ export function Flashcard({ question, onRate }: FlashcardProps) {
       )}
 
       {/* Calificación: la IA califica la respuesta hablada; solo se corrige si el micrófono falló. */}
-      {revealed && onRate && voiceResult !== null && (
+      {revealed && onRate && !grading && voiceResult !== null && (
         <div className="space-y-3 border-t border-slate-200 pt-4 dark:border-slate-700">
           <p className={voiceResult ? 'font-bold text-green-600' : 'font-bold text-red-600'}>
             {voiceResult ? `✓ ${t('voiceCorrect')}` : `✗ ${t('voiceIncorrect')}`}
           </p>
+          {feedback && <p className="text-base text-slate-600 dark:text-slate-300">{feedback}</p>}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-[2fr_1fr]">
             <Button big variant="primary" onClick={() => onRate(voiceResult)}>
               {t('continueNext')}
@@ -120,8 +173,8 @@ export function Flashcard({ question, onRate }: FlashcardProps) {
         </div>
       )}
 
-      {/* Autocalificación manual: solo cuando NO se respondió hablando. */}
-      {revealed && onRate && voiceResult === null && (
+      {/* Autocalificación manual: solo cuando NO se respondió hablando (ni se está calificando). */}
+      {revealed && onRate && !grading && voiceResult === null && (
         <div className="grid grid-cols-2 gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
           <Button big variant="secondary" onClick={() => onRate(false)}>
             🔁 {t('reviewAgain')}
