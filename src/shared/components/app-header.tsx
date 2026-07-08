@@ -25,7 +25,7 @@ export function AppHeader() {
   ]
 
   return (
-    <header className="border-b-2 border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+    <header className="glass-header sticky top-0 z-40">
       <div className="mx-auto w-full max-w-3xl space-y-3 px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Link href="/" className="text-xl font-extrabold text-blue-700 dark:text-blue-400">
@@ -36,7 +36,7 @@ export function AppHeader() {
             {user && (
               <button
                 onClick={() => signOut()}
-                className="rounded-lg border-2 border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="glass-pill rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200"
               >
                 {t('signOut')}
               </button>
@@ -51,10 +51,10 @@ export function AppHeader() {
                 key={l.href}
                 href={l.href}
                 className={cn(
-                  'rounded-lg px-3 py-2 text-base font-semibold transition-colors',
+                  'rounded-lg px-3 py-2 text-base font-semibold transition-all',
                   active
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800',
+                    ? 'glass-sheen border border-blue-400/50 bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow-md shadow-blue-600/25'
+                    : 'glass-pill text-slate-700 dark:text-slate-200',
                 )}
                 aria-current={active ? 'page' : undefined}
               >

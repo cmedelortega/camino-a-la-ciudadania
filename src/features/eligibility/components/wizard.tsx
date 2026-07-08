@@ -52,8 +52,7 @@ export function Wizard({ initial, onComplete }: WizardProps) {
   }
 
   const today = new Date().toISOString().slice(0, 10)
-  const dateInputClass =
-    'w-full rounded-xl border-2 border-slate-300 bg-white p-4 text-xl dark:border-slate-600 dark:bg-slate-800'
+  const dateInputClass = 'w-full rounded-xl glass-input p-4 text-xl'
 
   return (
     <div className="space-y-4">

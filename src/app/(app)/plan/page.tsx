@@ -92,10 +92,10 @@ export default function PlanPage() {
                 key={w}
                 onClick={() => setWeeks(w)}
                 className={cn(
-                  'rounded-lg border-2 px-4 py-2 text-lg font-bold',
+                  'rounded-lg px-4 py-2 text-lg font-bold transition-all',
                   weeks === w
-                    ? 'border-blue-600 bg-blue-600 text-white'
-                    : 'border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200',
+                    ? 'glass-sheen border border-blue-400/50 bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow-md shadow-blue-600/25'
+                    : 'glass-pill text-slate-700 dark:text-slate-200',
                 )}
                 aria-pressed={weeks === w}
               >
@@ -171,7 +171,7 @@ function WeekCard({
   return (
     <Card className={cn('space-y-3', done && 'opacity-70')}>
       <div className="flex items-start justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <p className="text-sm font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400">
             {t('weekTitle', { n: week.week })}
           </p>
@@ -180,7 +180,7 @@ function WeekCard({
             <p className="text-base text-slate-500">{t('questionsCount', { n: week.questionIds.length })}</p>
           )}
         </div>
-        <span className="text-3xl">{done ? '✅' : week.kind === 'learn' ? '📖' : week.kind === 'simulacros' ? '📝' : '🎯'}</span>
+        <span className="shrink-0 text-3xl">{done ? '✅' : week.kind === 'learn' ? '📖' : week.kind === 'simulacros' ? '📝' : '🎯'}</span>
       </div>
 
       {week.kind === 'review' && <p className="text-base text-slate-600 dark:text-slate-300">{t('reviewWeekTip')}</p>}

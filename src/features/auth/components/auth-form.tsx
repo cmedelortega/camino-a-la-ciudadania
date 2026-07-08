@@ -38,8 +38,7 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
     }
   }
 
-  const inputClass =
-    'w-full rounded-xl border-2 border-slate-300 bg-white p-4 text-lg dark:border-slate-600 dark:bg-slate-800'
+  const inputClass = 'w-full rounded-xl glass-input p-4 text-lg'
 
   return (
     <Card className="w-full max-w-md space-y-5">

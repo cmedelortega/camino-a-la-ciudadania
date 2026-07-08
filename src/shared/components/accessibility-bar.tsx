@@ -8,24 +8,30 @@ export function AccessibilityBar() {
   const { lang, setLang, increaseFont, decreaseFont, highContrast, toggleContrast, dark, toggleDark, t } =
     useSettings()
 
-  const pill = 'rounded-lg px-3 py-2 text-sm font-semibold border-2 transition-colors'
-  const active = 'bg-blue-600 text-white border-blue-600'
-  const idle = 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600'
+  const pill = 'rounded-lg px-3 py-2 text-sm font-semibold transition-all'
+  const active = 'glass-sheen border border-blue-400/50 bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow-md shadow-blue-600/25'
+  const idle = 'glass-pill text-slate-700 dark:text-slate-200'
 
   return (
     <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t('settings')}>
       {/* Idioma */}
-      <div className="flex overflow-hidden rounded-lg border-2 border-slate-300 dark:border-slate-600">
+      <div className="glass-pill flex overflow-hidden rounded-lg">
         <button
           onClick={() => setLang('es')}
-          className={cn('px-3 py-2 text-sm font-bold', lang === 'es' ? active : idle, 'border-0')}
+          className={cn(
+            'px-3 py-2 text-sm font-bold transition-colors',
+            lang === 'es' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-white/40 dark:text-slate-200 dark:hover:bg-white/10',
+          )}
           aria-pressed={lang === 'es'}
         >
           ES
         </button>
         <button
           onClick={() => setLang('en')}
-          className={cn('px-3 py-2 text-sm font-bold', lang === 'en' ? active : idle, 'border-0')}
+          className={cn(
+            'px-3 py-2 text-sm font-bold transition-colors',
+            lang === 'en' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-white/40 dark:text-slate-200 dark:hover:bg-white/10',
+          )}
           aria-pressed={lang === 'en'}
         >
           EN

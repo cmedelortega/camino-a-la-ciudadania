@@ -59,7 +59,7 @@ export default function ProcesoPage() {
                 onChange={() => toggle(item.id)}
                 className="h-7 w-7 shrink-0"
               />
-              <span className={`text-lg ${checked[item.id] ? 'text-slate-400 line-through' : ''}`}>
+              <span className={`min-w-0 break-words text-lg ${checked[item.id] ? 'text-slate-400 line-through' : ''}`}>
                 {lang === 'es' ? item.labelEs : item.labelEn}
               </span>
             </label>
@@ -91,22 +91,22 @@ function StepCard({
   return (
     <Card className="space-y-3">
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-start gap-3">
-          <span className="text-3xl">{step.icon}</span>
-          <div>
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="shrink-0 text-3xl">{step.icon}</span>
+          <div className="min-w-0">
             <p className="text-sm font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400">
               {t('stepLabel', { n: step.id })}
             </p>
-            <h2 className="text-xl font-bold leading-snug">{title}</h2>
+            <h2 className="text-xl font-bold leading-snug break-words">{title}</h2>
           </div>
         </div>
-        <Button variant="secondary" onClick={() => (speaking ? stop() : speak(audio, lang))} aria-label={t('listen')}>
+        <Button className="shrink-0" variant="secondary" onClick={() => (speaking ? stop() : speak(audio, lang))} aria-label={t('listen')}>
           🔊
         </Button>
       </div>
 
       <p className="text-lg">{desc}</p>
-      <ul className="space-y-1 text-lg">
+      <ul className="space-y-1 break-words text-lg">
         {bullets.map((b, i) => (
           <li key={i}>• {b}</li>
         ))}

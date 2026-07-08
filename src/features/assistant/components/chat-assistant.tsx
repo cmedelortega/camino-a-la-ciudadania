@@ -43,9 +43,11 @@ export function ChatAssistant() {
     if (params.get('web') === '1') setWebSearch(true)
   }, [])
 
-  // Auto-scroll al último mensaje.
+  // Auto-scroll al último mensaje (solo cuando ya hay conversación, para no
+  // empujar el saludo inicial por debajo del header de cristal pegajoso).
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messages.length === 0) return
+    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [messages, isLoading])
 
   function submit(text: string) {
@@ -152,7 +154,7 @@ export function ChatAssistant() {
             onChange={(e) => setInput(e.target.value)}
             placeholder={t('askPlaceholder')}
             disabled={isLoading}
-            className="flex-1 rounded-xl border-2 border-slate-300 bg-white p-4 text-lg dark:border-slate-600 dark:bg-slate-800"
+            className="min-w-0 flex-1 rounded-xl glass-input p-4 text-lg"
           />
           <Button big type="submit" disabled={isLoading || !input.trim()}>
             {t('send')}
